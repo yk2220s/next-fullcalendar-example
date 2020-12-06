@@ -1,14 +1,26 @@
+import { useState } from "react";
 import Layout from "../components/Layout";
-import FullCalendar from "@fullcalendar/react";
+import FullCalendar, { DatesSetArg, EventInput } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import "@fullcalendar/common/main.css";
+import "@fullcalendar/daygrid/main.css";
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <FullCalendar
-      plugins={[dayGridPlugin]}
-      initialEvents={[{ title: "initial event", start: new Date() }]}
-    />
-  </Layout>
-);
+const IndexPage = () => {
+  const [events, setEvents] = useState<EventInput[]>([
+    { title: "initial event1", start: new Date() },
+  ]);
+
+  return (
+    <Layout>
+      <FullCalendar
+        plugins={[dayGridPlugin]}
+        events={events}
+        datesSet={(arg: DatesSetArg) => {
+          setEvents([...events, { title: "additional", start: arg.start }]);
+        }}
+      />
+    </Layout>
+  );
+};
 
 export default IndexPage;
